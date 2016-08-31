@@ -1,8 +1,7 @@
 # humidity_sensing_setup
 Humidity Sensing Setup For Graphene Studies. LabView and Arduino IDE codes with PCB files of electronics.
 
-The files in this repository are for graphene atmosphere interaction project that held in Nanoscale Surface Science Laboratory 
-in Istanbul Technical University, Istanbul. The project is suported by Tübitak 1003 project with the grant number of 114F036.
+The files in this repository are for graphene atmosphere interaction project that held in Nanoscale Surface Science Laboratoryin Istanbul Technical University, Istanbul. This work is also the part of B.Sc. thesis of me. The project is suported by Tübitak 1003 project with the grant number of 114F036.
 
 The files consist three parts; Arduino IDE codes, LabView codes and PCB files for electronics. The purposes of these files will
 be listed further.
