@@ -1,42 +1,13 @@
-#include <Sensirion.h> //SHT75 related library
-#include "DHT.h" //DHT11 related library
-#include <Wire.h> //BME280 related library
-#include <SPI.h> //BME280 and MAX31855 related library
-#include <Adafruit_Sensor.h> //BME280 related library
-#include <Adafruit_BME280.h> //BME280 related library
-#include "Adafruit_MAX31855.h"
+#include <Sensirion.h>
+#include "DHT.h"
 unsigned long time;
 
-#define DHT1PIN 4 //Define DHT11 Output
-#define DHT2PIN 4 //Define DHT11 Output
+#define DHT1PIN 4
+#define DHT2PIN 7
 
 #define DHT1TYPE DHT11
 #define DHT2TYPE DHT11
 
-//BME280 Define
-#define BME_SCK 13
-#define BME_MISO 12
-#define BME_MOSI 11
-#define BME_CS 10
-
-//initialize the BME280
-#define SEALEVELPRESSURE_HPA (1013.25)
-Adafruit_BME280 bme(BME_CS, BME_MOSI, BME_MISO,  BME_SCK);
-
-//Thermocouple reading define
-#define MAXDO   5
-#define MAXCS   6
-#define MAXCLK  7
-
-// initialize the Thermocouple
-Adafruit_MAX31855 thermocouple(MAXCLK, MAXCS, MAXDO);
-
-#if defined(ARDUINO_ARCH_SAMD)
-// for Zero, output on USB Serial console, remove line below if using programming port to program the Zero!
-#define Serial SerialUSB
-#endif
-
-//initialize the DHT11
 DHT dht1(DHT1PIN, DHT1TYPE);
 DHT dht2(DHT2PIN, DHT2TYPE);
 
@@ -61,13 +32,10 @@ unsigned long trhMillis = 0;             // Time interval tracking
 unsigned long blinkMillis = 0;
 
 void setup() {
-#ifndef ESP8266
-  while (!Serial);     // will pause Zero, Leonardo, etc until serial console opens
-#endif
   dht1.begin();
   dht2.begin();
   Serial.begin(9600);
-  //Serial.println("In.(%) In.Tem(*C) Pressure Thermocouple Out.(%) Time");
+  //Serial.println("In.(%) In.Tem(*C) Out.(%) Time");
   pinMode(ledPin, OUTPUT);
   delay(15);                           // Wait >= 11 ms before first cmd
   // Demonstrate blocking calls
@@ -77,10 +45,6 @@ void setup() {
   humidity = sht.calcHumi(rawData, temperature);
   dewpoint = sht.calcDewpoint(humidity, temperature);
   logData();
-  if (!bme.begin()) {
-    Serial.println("Could not find a valid BME280 sensor, check wiring!");
-    while (1);
-  }
 }
 
 void loop() {
@@ -118,21 +82,13 @@ void loop() {
       Serial.print(temperature);
       Serial.print(" \t");
 
-      Serial.print(bme.readPressure() / 100.0F);
-      double c = thermocouple.readCelsius();
-      Serial.print(" \t");
-      if (isnan(c)) {
-        Serial.println("Something wrong with thermocouple!");
-      } else {
-        Serial.println(c);
-      }
       if (isnan(t2) || isnan(h2)) {
         Serial.println("Failed to read from DHT #1");
       } else {
-        //Serial.print(h2);
-        //Serial.print(" \t");
+        Serial.print(h2);
+        Serial.print(" \t");
         float seconds = curMillis  / 1000.0;
-        //Serial.println(seconds);
+        Serial.println(seconds);
       }
     }
     else {
@@ -142,7 +98,6 @@ void loop() {
       logData();
     }
   }
-
 }
 
 void logData() {
