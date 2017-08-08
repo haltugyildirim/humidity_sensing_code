@@ -8,8 +8,8 @@
 
 #include <Sensirion.h>
 
-const uint8_t dataPin  =  9;
-const uint8_t clockPin =  8;
+const uint8_t dataPin  =  10;
+const uint8_t clockPin =  7;
 
 float temperature;
 float humidity;

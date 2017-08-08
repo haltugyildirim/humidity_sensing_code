@@ -78,7 +78,7 @@ void setup() {
   dewpoint = sht.calcDewpoint(humidity, temperature);
   logData();
   if (!bme.begin()) {
-    Serial.println("100");
+    Serial.println("Could not find a valid BME280 sensor, check wiring!");
     while (1);
   }
 }
